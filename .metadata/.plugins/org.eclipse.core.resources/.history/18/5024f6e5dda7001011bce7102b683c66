@@ -1,0 +1,5 @@
+package com.kedu.file.interceptors;
+
+public class JwtInterceptor {
+
+}

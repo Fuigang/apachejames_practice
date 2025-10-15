@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sublime-night-472604-p4",
+  "private_key_id": "d82ffe1fa8d0c7752706d33d332802994e084a31",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDNVfVeRZuhpPIO\nQvsZRzW8xkzgcv+kWXDl+lKdRihgIp9b7gFTbgzkDpI63VF3WB/rGXV15JNKWL3s\nMpkuGCOI6Ns5A0Fh0dBH1EA0jpdFCg4KrMgZSZdfqWDYf9BQLd0hjxEwLJTofdW5\nSEUxGRsAoMMTWPvgIQSoPvDIQLt6yq6gVGdu55eKlccDYA+olKE6ue2mljJPIBtG\nYFQGMbIAgjaanbOmfElWUNKLTMpoTVYs8N/UXoaPv9PiOt7UfjOlqEBcpI8RgDre\njxSidBfyWczXqP2ZaPsur+RDXy2CrWFvafhwmFBYAFEDB52/ga2N2qhrgKqrMsYC\n/QJ/H4xLAgMBAAECggEAL+ygGCCm8lNNK4b2lC/KmwStbLVqdTFq6EJEhfCZ+9YY\n25vxM0e8On4sIxEEspYe3QBUKe/vcKrFqRsmJVv87zdp8ySPXgVaV2lyktG0/Kgc\nHuG00jIa4njl4aHzPMN3mR2LJXNCTgEQoO39ODhj1QGwhhN+thD+xUXrbNGu8Dly\nlKfKyfnH5F96G450bLskTaa8kMllsbZ95zlt3btUsOt/lIX9+64NNTaQo5pdotsQ\ncw/bTYei2q0aP0Ww3u/FD3Uz8I+uko6MAboTw4eU2fjfPy8WGaEUVAW0vrTgUU8X\ni9thLjouxga7PZbWTgE3IxwPbMp1BwN0ZWePEK4uAQKBgQD6uz84/EQY2y497fRM\nQ6ZMBQo+Q2OejApglKCfubj7l2DyCral55jEJPH8NG/5IBEDJTlQR/D7O60pzGS2\n6/AxnnlmGnx+pHKu31WJphtvk4pVecbNxVLOyBl76e69t6Lw/3pG5BvTaBZg6QnW\nyDXgDviPR8WXGQhH5uqx/+jrVwKBgQDRpoQNeyGW0QWNc4l8x7/9OttuMMEyXv+C\nf40CGoKUdw0s/zTvud4EESxlbsdfyfbp0rDkv0HjqGzTHd79hXbpZ65CmNt+LeeL\nuX/gt1YbfaS8DU8V+blJgO4X8NfRKZPuYSjH4bf8ZenqrG775+gaAk+UK93blG8f\nKpl4QjSCLQKBgQCeMG0fAunj1MVEBVFQnI3bAIMJ7XJ4oVoavSrqGz7+XO+pReEe\noxPbDIQv3tWWlAint2CFqh38JBaIfJA+aHVOmPF23dcV/6LrebR59/bvWmK4svAe\n+xPXqp+JcnpR7/45lrYK6/gyVUVpNx4iCIcVKdzgaSPcxMpYsvP4AcFuWQKBgQDC\npBMjpPapW8QI8IRr6dPQWc2RfwhPKK2Vza/vjQdAqUr9RK80Bd8e7YbHYVMPFqX7\nrhV3Oi4FG8B1PN1jiH6+8fhychIOErZPHdigm/YAreS8hqqvH1sr59ylM4Ba+3wR\nK/k9oc08Mq46pv6fN05gn1acnSFsFGIakGVNpkGzvQKBgQDmDsgze76RFlrSCTm9\n7e8SInkXZxbPdpYWvOv5YFkdEKbQkkBcaFK19LWbZVBJyFDyx1qV07zJ4WhELJyu\nGTC1vBK/t18CQCdOh9o+iu0z6BZjh+IEQn23JJwYU5tvuWFLaK2cayY4SF4M9+68\nt5m9nmVa+zbVlrRPBwuhLHRNrw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "gcs-30@sublime-night-472604-p4.iam.gserviceaccount.com",
+  "client_id": "107109610613800724598",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcs-30%40sublime-night-472604-p4.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

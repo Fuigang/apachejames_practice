@@ -1,0 +1,88 @@
+package com.kedu.study.controllers;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.kedu.study.dto.AuthDTO;
+import com.kedu.study.services.AuthService;
+
+import jakarta.servlet.http.HttpSession;
+
+@RestController // 모든 전송방식이 ResponseBody임을 전제하에 
+@RequestMapping("/auth")
+public class AuthController {
+		
+	
+	
+	@Autowired
+	public AuthService authService;
+	
+	
+	
+	@PostMapping("/signup") //C [create]
+	public ResponseEntity<Void> insert(@RequestBody AuthDTO dto){
+		System.out.println("전달된 데이터 : " + dto.getId());
+		authService.insert(dto);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<Map<String,String>> idCheck(@RequestBody AuthDTO dto, HttpSession session){
+		
+		boolean isExist = authService.Idcheck(dto); //대문자 X
+		if(isExist) { //로그인에 성공하면 
+			session.setAttribute("loginId",dto.getId()); // 아이디를 세션에 보관
+			
+			Map<String,String> result = new HashMap<>();
+			result.put("loginId", dto.getId());
+			return ResponseEntity.ok(result);
+		}
+		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); 
+		
+		
+	}
+	
+	@GetMapping("/test")
+	public ResponseEntity<Void> idTest(HttpSession session){
+		 String result = (String)session.getAttribute("loginId");
+		 System.out.println("전달된 아이디 : " + result);
+		 return ResponseEntity.ok().build();
+		
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable String id){
+			authService.delete(id);
+			
+			return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping
+	public ResponseEntity<List <AuthDTO>> getUser(String id){
+		if(id != null) {
+			List<AuthDTO> list = AuthService.selectById(id);
+			return ResponseEntity.ok(list);
+		}	
+		else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
+	}
+	
+	
+}
+
+

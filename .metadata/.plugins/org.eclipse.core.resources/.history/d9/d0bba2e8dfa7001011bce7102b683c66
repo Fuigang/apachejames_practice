@@ -1,0 +1,5 @@
+package com.kedu.file.config;
+
+public class InterceptorConfig {
+
+}
