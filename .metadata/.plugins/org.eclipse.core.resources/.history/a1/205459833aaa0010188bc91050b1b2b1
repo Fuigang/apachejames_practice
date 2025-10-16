@@ -1,0 +1,24 @@
+package com.kedu.test.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration // 이 클래스가 스프링의 설정 파일임을 나타냅니다.
+public class Web_config implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        // addMapping("/**") : 우리 서버의 모든 API 엔드포인트("/**")에 대해 CORS 설정을 적용합니다.
+        registry.addMapping("/**")
+                // allowedOrigins(...) : 오직 "http://localhost:3000" 주소에서 오는 요청만 허용합니다.
+                .allowedOrigins("http://localhost:3000")
+                // allowedMethods("*") : GET, POST, PUT, DELETE 등 모든 HTTP 메소드를 허용합니다.
+                .allowedMethods("*")
+                // allowedHeaders("*") : 모든 요청 헤더를 허용합니다.
+                .allowedHeaders("*")
+                // allowCredentials(true) : 요청에 쿠키나 인증 정보를 포함하는 것을 허용합니다.
+                .allowCredentials(true);
+    }
+
+}

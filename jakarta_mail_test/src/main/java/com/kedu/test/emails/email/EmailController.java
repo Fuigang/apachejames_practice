@@ -1,0 +1,38 @@
+package com.kedu.test.emails.email;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController // 이 클래스가 REST API의 컨트롤러임을 나타냅니다.
+public class EmailController {
+
+    private final EmailService emailService;
+
+    // 생성자를 통해 EmailService를 주입받습니다. (의존성 주입)
+    public EmailController(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    /**
+     * 테스트 메일을 발송하기 위한 API 엔드포인트입니다.
+     * Postman 등을 통해 http://localhost:80/api/mails/send-test 주소로 POST 요청을 보내면 실행됩니다.
+     */
+    @PostMapping("/api/mails/send-test")
+    public ResponseEntity<String> sendTestEmail() {
+        try {
+            // 주입받은 서비스의 메일 발송 메소드를 호출합니다.
+            emailService.sendTestMail();
+            
+            // 성공 시, HTTP 200 OK 상태와 성공 메시지를 반환합니다.
+            return ResponseEntity.ok("테스트 메일이 성공적으로 발송되었습니다.");
+
+        } catch (Exception e) {
+            // 서비스 로직에서 오류 발생 시, 개발자가 원인을 파악하기 쉽도록 로그를 출력합니다.
+            e.printStackTrace(); 
+            
+            // 실패 시, HTTP 500 Internal Server Error 상태와 오류 메시지를 반환합니다.
+            return ResponseEntity.internalServerError().body("메일 발송 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+}

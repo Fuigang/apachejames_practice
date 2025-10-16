@@ -1,0 +1,5 @@
+package com.kedu.test.common;
+
+public class Encryptor {
+
+}

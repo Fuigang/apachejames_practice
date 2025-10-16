@@ -1,0 +1,49 @@
+package com.kedu.test.emails.email; // 팀장님 패키지 구조 그대로
+
+import org.springframework.stereotype.Service;
+import java.io.IOException;
+
+@Service
+public class Email_accountService {
+
+    private final String DOCKER_CONTAINER_NAME = "my-james-server";
+
+    /**
+     * James 메일 서버에 새로운 계정을 생성합니다.
+     * 실패 시 예외를 발생시킵니다.
+     * @param username 생성할 이메일 주소
+     * @param password 원본 비밀번호
+     * @throws Exception 계정 생성 실패 시
+     */
+    public void createMailAccount(String username, String password) throws Exception {
+        String[] command = {
+            "docker", "exec", "-it", DOCKER_CONTAINER_NAME, "james-cli", "adduser", username, password
+        };
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start();
+            
+            // 1. Docker 명령어가 끝날 때까지 기다리고, 결과 코드(exit code)를 받습니다. (0이면 성공)
+            int exitCode = process.waitFor();
+
+            // 2. 만약 결과 코드가 0이 아니면 (실패했다면), 즉시 예외를 발생시킵니다.
+            if (exitCode != 0) {
+                // 나중에 디버깅이 필요하면, 여기서 process.getErrorStream()을 읽는 코드를 추가할 수 있습니다.
+                // 지금은 "실패했다"는 사실만 상위 서비스(MemberService)에 알리면 충분합니다.
+                throw new Exception("메일 서버(James)에 계정을 생성하는 데 실패했습니다.");
+            }
+            
+            // 성공하면 아무것도 하지 않고 조용히 끝납니다.
+            System.out.println("James 서버에 계정 '" + username + "' 생성을 성공적으로 요청했습니다.");
+
+        } catch (IOException | InterruptedException e) {
+            // 이 catch 블록은 docker 명령 자체를 실행하지 못하는 등 더 심각한 오류가 발생했을 때 실행됩니다.
+            e.printStackTrace(); // 오류 로그를 남기는 것은 중요합니다.
+            // 스레드가 중단되었을 때의 표준 처리
+            Thread.currentThread().interrupt(); 
+            // 여기서도 예외를 다시 던져서 실패를 명확히 알립니다.
+            throw new Exception("메일 계정 생성 프로세스 실행 중 시스템 오류가 발생했습니다.", e);
+        }
+    }
+}

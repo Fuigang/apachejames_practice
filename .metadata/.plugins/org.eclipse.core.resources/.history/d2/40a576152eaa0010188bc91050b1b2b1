@@ -1,0 +1,17 @@
+package com.kedu.test.emails.email;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class EmailDAO {
+
+	@Autowired
+    private SqlSession mybatis;
+	
+	private static final String NAMESPACE = "EmailMapper.";
+	
+	
+	
+}

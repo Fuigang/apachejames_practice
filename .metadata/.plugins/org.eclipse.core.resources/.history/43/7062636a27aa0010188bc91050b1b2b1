@@ -1,0 +1,5 @@
+package com.kedu.test.members;
+
+public class MemberDTO {
+
+}

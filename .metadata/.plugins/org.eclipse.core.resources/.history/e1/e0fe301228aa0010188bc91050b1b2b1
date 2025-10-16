@@ -1,0 +1,5 @@
+package com.kedu.test.emails.emailsender;
+
+public class Email_senderDTO {
+
+}

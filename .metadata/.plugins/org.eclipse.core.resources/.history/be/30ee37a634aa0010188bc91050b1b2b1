@@ -1,0 +1,24 @@
+package com.kedu.test.members;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class MemberService {
+
+    private final MemberDAO memberDAO;
+
+    // 생성자를 통해 MemberDAO를 주입받습니다.
+    public MemberService(MemberDAO memberDAO) {
+        this.memberDAO = memberDAO;
+    }
+
+    /**
+     * 이메일로 사원 정보를 조회합니다.
+     * @param email 조회할 이메일
+     * @return MemberDto 조회된 사원 정보
+     */
+    public MemberDto findByEmail(String email) {
+        // DAO의 findByEmail 메소드를 호출하고 결과를 그대로 반환합니다.
+        return memberDAO.findByEmail(email);
+    }
+}

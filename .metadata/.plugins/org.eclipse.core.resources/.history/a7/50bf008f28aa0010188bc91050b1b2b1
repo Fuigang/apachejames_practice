@@ -1,0 +1,5 @@
+package com.kedu.test.emails.email;
+
+public class EmailDTO {
+
+}

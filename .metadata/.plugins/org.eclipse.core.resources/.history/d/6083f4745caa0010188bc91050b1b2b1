@@ -1,0 +1,58 @@
+package com.kedu.test.members;
+
+import com.kedu.test.emails.emailbox.Email_boxService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
+@Service
+public class MemberService {
+
+    private final Email_boxService email_boxService;
+	@Autowired
+	private MemberDAO dao;
+	
+	// James 메일 계정 생성을 전담할 MailAccountService를 주입받습니다.
+		@Autowired
+		private Email_accountService Email_accountService;
+
+    MemberService(Email_boxService email_boxService) {
+        this.email_boxService = email_boxService;
+    }
+		
+		/**
+		 * 회원가입과 동시에 James 메일 서버에 계정을 생성합니다.
+		 * @param dto 사용자가 입력한 원본 정보가 담긴 DTO
+		 * @return DB에 저장된 row 수
+		 */
+		@Transactional // 두 시스템(우리 DB, James 서버)에 대한 작업을 한 묶음으로 보장합니다.
+		public int signup(MemberDTO dto)throws Exception {
+		    
+		    // --- 1단계: '사내 우편실'에 사서함 신청 (James 서버 계정 생성) ---
+	        // 비밀번호를 암호화하기 "전", 원본 비밀번호를 사용하여 James 서버에 계정을 먼저 생성합니다.
+			Email_accountService.createMailAccount(
+	            dto.getEmail(),
+	            dto.getPw() // ★★★ 바로 이 순간! 암호화되지 않은 원본 비밀번호를 사용합니다 ★★★
+	        );
+	      
+		    
+		    // --- 2단계: '회사 인사 DB'에 암호화된 정보로 저장 ---
+			// James 계정 생성이 성공한 후에만, 그룹웨어 DB에 저장할 비밀번호를 암호화합니다.
+			dto.setPw(Encryptor.encrypt(dto.getPw())); // 암호화
+			
+			// 암호화된 비밀번호가 담긴 DTO를 DB에 저장합니다.
+			return dao.signup(dto);
+		}
+	
+	// 로그인
+	public int login(MemberDTO dto) {
+		dto.setPw(Encryptor.encrypt(dto.getPw())); // 암호화
+		return dao.login(dto);
+	}
+	
+	// 비밀번호찾기(초반 이메일인증)
+	public int findpw(MemberDTO dto) {
+		return dao.findpw(dto);
+	}
+}

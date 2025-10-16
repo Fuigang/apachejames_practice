@@ -1,0 +1,62 @@
+package com.kedu.test.emails.email;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class Email_accountService {
+
+    private static final Logger log = LoggerFactory.getLogger(MailAccountService.class);
+    private final String DOCKER_CONTAINER_NAME = "my-james-server";
+
+    /**
+     * James 메일 서버에 새로운 계정을 생성합니다.
+     * @param username 생성할 이메일 주소
+     * @param password 원본 비밀번호
+     * @throws Exception 계정 생성 실패 시 예외를 직접 던집니다.
+     */
+    public void createMailAccount(String username, String password) throws Exception {
+        String[] command = {
+            "docker", "exec", "-it", DOCKER_CONTAINER_NAME, "james-cli", "adduser", username, password
+        };
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+
+            // 3. 명령어 실행이 끝날 때까지 기다리고, 결과 코드를 받습니다. (0이면 성공)
+            int exitCode = process.waitFor();
+
+            // (디버깅용) 명령어 실행 결과를 콘솔에 출력하여 성공/실패 여부를 확인합니다.
+            try (BufferedReader reader = new BufferedReader(new InputStreamInputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println("James-CLI Output: " + line);
+                }
+            }
+             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.err.println("James-CLI Error: " + line);
+                }
+            }
+
+
+          // ★★★ 핵심 변경점! ★★★
+             // 이제 exitCode가 0이 아니면(실패하면), false를 반환하는 대신 예외를 던집니다.
+             if (exitCode != 0) {
+                 throw new Exception("James-CLI 명령어 실행 실패. exitCode: " + exitCode);
+             }
+
+         } catch (IOException | InterruptedException e) {
+             log.error("MailAccountService에서 외부 프로세스 실행 중 예외 발생", e);
+             Thread.currentThread().interrupt();
+             // 여기서도 예외를 다시 던져서 실패를 명확히 알립니다.
+             throw new Exception("메일 계정 생성 프로세스 실행 중 오류 발생", e);
+         }
+     }
+}

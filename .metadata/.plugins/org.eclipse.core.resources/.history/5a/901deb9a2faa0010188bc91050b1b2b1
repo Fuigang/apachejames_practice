@@ -1,0 +1,5 @@
+package com.kedu.test.emails.emailbox;
+
+public class Email_boxDAO {
+
+}

@@ -1,0 +1,46 @@
+package com.kedu.test.emails.emailbox;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class Email_boxService {
+
+    private final Email_boxDAO emailboxDAO;
+
+    public Email_boxService(Email_boxDAO emailboxDAO) {
+        this.emailboxDAO = emailboxDAO;
+    }
+
+    /**
+     * 메일함 고유번호를 조회하고, 만약 존재하지 않으면 새로 생성한 뒤 번호를 반환하는 '스마트' 메소드입니다.
+     * @param memberEmail 사원 이메일
+     * @param emailboxType 메일함 종류 (예: "보낸편지함")
+     * @return int 메일함 고유번호
+     */
+    @Transactional // DB에 데이터를 생성할 수 있으므로 트랜잭션 처리가 안전합니다.
+    public int findOrCreateEmailboxSeq(String memberEmail, String emailboxType) {
+        // 1. DAO를 통해 메일함 번호를 찾아봅니다. (DAO는 이제 null을 반환할 수 있습니다.)
+        Integer emailboxSeq = emailboxDAO.findEmailboxSeqByEmailAndType(memberEmail, emailboxType);
+
+        // 2. 만약 결과가 null이면 (메일함이 없으면) - 드디어 이 코드가 살아납니다!
+        if (emailboxSeq == null) {
+            System.out.println("LOG: " + memberEmail + "의 '" + emailboxType + "' 메일함이 없어 새로 생성합니다.");
+            
+            // A. 새로운 메일함 DTO를 만듭니다.
+            Email_boxDTO newBox = new Email_boxDTO();
+            newBox.setMember_email(memberEmail);
+            newBox.setEmailbox_type(emailboxType);
+
+            // B. DAO를 통해 DB에 생성 요청을 합니다.
+            emailboxDAO.createEmailbox(newBox);
+            
+            // C. 생성된 DTO에 채워진 새로운 seq 값을 반환합니다.
+            return newBox.getEmailbox_seq();
+        } else {
+            // 3. 메일함이 이미 존재하면, 찾은 번호를 그대로 반환합니다.
+            System.out.println("LOG: " + memberEmail + "의 '" + emailboxType + "' 메일함(" + emailboxSeq + ")을 찾았습니다.");
+            return emailboxSeq;
+        }
+    }
+}

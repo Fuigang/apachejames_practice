@@ -1,0 +1,66 @@
+package com.kedu.test.emails.email;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class Email_accountService {
+
+    // Docker 컨테이너 이름은 나중에 application.properties에서 관리하는 것이 더 좋습니다.
+    private final String DOCKER_CONTAINER_NAME = "my-james-server";
+
+    /**
+     * James 메일 서버에 새로운 이메일 계정을 생성합니다.
+     * @param username 생성할 이메일 주소 (예: "new_user@test.com")
+     * @param password 생성할 계정의 비밀번호 (원본 비밀번호)
+     * @return 성공 여부 (Docker 명령어가 성공적으로 실행되면 true)
+     */
+    public boolean createMailAccount(String username, String password) {
+        // 1. 실행할 Docker 명령어를 각 부분으로 나눠서 배열에 담습니다.
+        String[] command = {
+            "docker",
+            "exec",
+            "-it",
+            DOCKER_CONTAINER_NAME,
+            "james-cli",
+            "adduser",
+            username,
+            password
+        };
+
+        try {
+            // 2. ProcessBuilder를 사용하여 외부 명령어를 실행할 준비를 합니다.
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start(); // 명령어 실행!
+
+            // 3. 명령어 실행이 끝날 때까지 기다리고, 결과 코드를 받습니다. (0이면 성공)
+            int exitCode = process.waitFor();
+
+            // (디버깅용) 명령어 실행 결과를 콘솔에 출력하여 성공/실패 여부를 확인합니다.
+            try (BufferedReader reader = new BufferedReader(new InputStreamInputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println("James-CLI Output: " + line);
+                }
+            }
+             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.err.println("James-CLI Error: " + line);
+                }
+            }
+
+
+            // 4. 성공 여부를 반환합니다.
+            return exitCode == 0;
+
+        } catch (IOException | InterruptedException e) {
+            // 오류 발생 시 로그를 남기고 실패(false)를 반환합니다.
+            e.printStackTrace();
+            return false;
+        }
+    }
+}

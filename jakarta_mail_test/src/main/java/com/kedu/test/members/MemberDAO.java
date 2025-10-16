@@ -1,0 +1,28 @@
+package com.kedu.test.members;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class MemberDAO {
+
+	
+	@Autowired
+    private SqlSession mybatis;
+	
+	private static final String NAMESPACE = "MemberMapper.";
+	
+	public MemberDTO findByEmail(String email) {
+        // mybatis 객체의 selectOne 메소드를 호출합니다.
+        // 첫 번째 파라미터는 "namespace.sql_id", 두 번째 파라미터는 SQL에 전달할 값입니다.
+        return mybatis.selectOne(NAMESPACE + "findByEmail", email);
+    }
+	
+	// 회원가입
+		public int signup(MemberDTO dto) { 
+			return mybatis.insert("Member.insert", dto);
+		}
+	
+	
+}

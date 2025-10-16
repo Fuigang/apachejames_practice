@@ -1,0 +1,7 @@
+package com.kedu.test.emails.email;
+
+
+
+public interface EmailDAO {
+
+}

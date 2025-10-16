@@ -35,4 +35,13 @@
     <fullyQualifiedTypeName name="com.kedu.file.interceptors.JwtInterceptor"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="com.kedu.file.config.InterceptorConfig"/>
+    <fullyQualifiedTypeName name="java.security.Timestamp"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Repository"/>
+    <fullyQualifiedTypeName name="jakarta.mail.Message"/>
+    <fullyQualifiedTypeName name="jakarta.mail.Transport"/>
+    <fullyQualifiedTypeName name="jakarta.mail.Authenticator"/>
+    <fullyQualifiedTypeName name="jakarta.mail.Session"/>
+    <fullyQualifiedTypeName name="jakarta.mail.PasswordAuthentication"/>
+    <fullyQualifiedTypeName name="java.lang.Exception"/>
+    <fullyQualifiedTypeName name="java.security.MessageDigest"/>
 </qualifiedTypeNameHistroy>

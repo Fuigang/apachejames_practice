@@ -1,0 +1,50 @@
+package com.kedu.test.emails.email;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.kedu.test.emails.emailbox.Email_boxDAO;
+import com.kedu.test.members.MemberDAO;
+
+import jakarta.mail.MessagingException;
+
+@Service
+public class EmailService {
+
+    // --- '총괄 매니저'가 지시를 내릴 모든 '실무 담당자'들 ---
+    private final MemberDAO memberDAO;
+    private final EmailDAO emailDAO;
+    private final Email_boxDAO email_boxDAO;
+    private final Email_senderDAO email_senderDAO; // 수신자 담당자 추가
+
+    // 생성자를 통해 모든 담당자를 배정받습니다.
+    public EmailService(MemberDAO memberDAO, EmailDAO emailDAO, Email_boxDAO emailboxDAO, Email_senderDAO emailSenderDAO) {
+        this.memberDAO = memberDAO;
+        this.emailDAO = emailDAO;
+        this.email_boxDAO = emailboxDAO;
+        this.emailSenderDAO = emailSenderDAO;
+    }
+
+    @Transactional
+    public void sendTestMail() throws MessagingException {
+        // ... 테스트 데이터 정의 ...
+        String senderEmail = "user01@test.com";
+        String recipientEmail = "user01@test.com";
+
+        // 1. '메일함 담당자'에게 지시: "보낸편지함 ID 좀 찾아주세요."
+        int sentBoxSeq = email_boxDAO.findEmailboxSeqByEmailAndType(senderEmail, "보낸편지함");
+
+        // ... EmailDto 객체 생성 ...
+
+        // 2. '메일 본문 담당자'에게 지시: "이 메일 내용 DB에 저장해주세요."
+        emailDAO.saveEmail(emailDto);
+
+        // ... EmailSenderDto 객체 생성 ...
+
+        // 3. '수신자 담당자'에게 지시: "이 수신자 정보 DB에 저장해주세요."
+        emailSenderDAO.saveSender(senderDto);
+
+        // 4. 이제 '총괄 매니저'가 직접 외부 업체(James 서버)와 통신하여 실제 발송 처리
+        // ... (Jakarta Mail API를 사용한 동적 로그인 및 발송 로직) ...
+    }
+}

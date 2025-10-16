@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EmailMapper">
+
+    <insert id="saveEmail" parameterType="EmailDTO">
+        <selectKey keyProperty="email_seq" resultType="int" order="BEFORE">
+            SELECT email_seq.NEXTVAL FROM DUAL
+        </selectKey>
+        
+        INSERT INTO email (
+            email_seq, emailbox_seq, title, email_from, content, read, james_message_uid
+        ) VALUES (
+            #{email_seq}, #{emailbox_seq}, #{title}, #{email_from}, #{content}, 'y', #{james_message_uid}
+        )
+    </insert>
+
+    <insert id="saveSender" parameterType="Email_senderDTO">
+        INSERT INTO email_sender (
+            sender_seq, email_seq, sender_email
+        ) VALUES (
+            sender_seq.NEXTVAL, #{email_seq}, #{sender_email}
+        )
+    </insert>
+
+</mapper>

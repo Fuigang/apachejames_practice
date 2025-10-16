@@ -1,0 +1,21 @@
+package com.kedu.test.emails.emailbox;
+
+@Service
+public class Email_boxService {
+
+    private final Email_boxDAO email_boxDAO;
+
+    public Email_boxService(Email_boxDAO email_boxDAO) {
+        this.email_boxDAO = email_boxDAO;
+    }
+
+    /**
+     * 사원 이메일과 메일함 종류로 메일함 고유번호(seq)를 조회합니다.
+     * @param memberEmail 사원 이메일
+     * @param emailboxType 메일함 종류 (예: "보낸편지함")
+     * @return int 메일함 고유번호
+     */
+    public int findEmailboxSeqByEmailAndType(String member_email, String emailbox_type) {
+        return email_boxDAO.findEmailboxSeqByEmailAndType(member_email, emailbox_type);
+    }
+}
