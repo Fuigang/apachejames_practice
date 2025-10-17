@@ -7,5 +7,11 @@
         SELECT * FROM member 
         WHERE email = #{email}
     </select>
-
+	<insert id="signup" parameterType="MemberDTO">
+    INSERT INTO member (
+        email, pw, name, phone, company_code, dept_code, level_code
+    ) VALUES (
+        #{email}, #{pw}, #{name}, #{phone}, #{company_code}, #{dept_code}, #{level_code}
+    )
+</insert>
 </mapper>

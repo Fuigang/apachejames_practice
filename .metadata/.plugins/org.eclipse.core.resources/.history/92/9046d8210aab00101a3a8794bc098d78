@@ -1,0 +1,39 @@
+package com.kedu.test.emails.email; // 팀장님 패키지 구조 그대로
+
+import org.springframework.stereotype.Service;
+import java.io.IOException;
+
+@Service
+public class Email_accountService {
+
+    private final String DOCKER_CONTAINER_NAME = "my-james-server";
+
+    public void createMailAccount(String username, String password) throws Exception {
+        // 우리가 이전에 찾아낸 정확한 전체 경로를 사용합니다.
+        String[] command = {
+            "docker", "exec", "-it", DOCKER_CONTAINER_NAME,
+            "/usr/bin/james-cli", 
+            "adduser",
+            username,
+            password
+        };
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+
+            if (exitCode != 0) {
+                // 이제는 이 오류가 왜 났는지 명확하게 알 수 있습니다.
+                throw new Exception("메일 서버(James)에 계정을 생성하는 데 실패했습니다. (docker exec adduser 실패)");
+            }
+            
+            System.out.println("James 서버에 계정 '" + username + "' 생성을 성공적으로 요청했습니다.");
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt(); 
+            throw new Exception("메일 계정 생성 프로세스 실행 중 시스템 오류가 발생했습니다.", e);
+        }
+    }
+}

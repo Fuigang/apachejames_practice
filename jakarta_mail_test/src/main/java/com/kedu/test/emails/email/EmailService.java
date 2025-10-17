@@ -57,8 +57,8 @@ public class EmailService {
     @Transactional
     public void sendTestMail() throws MessagingException {
         // --- 1. 테스트 데이터 정의 ---
-        String senderEmail = "user01@test.com";
-        String recipientEmail = "user01@test.com"; // 자기 자신에게 발송
+        String senderEmail = "user02@test.com";
+        String recipientEmail = "user02@test.com"; // 자기 자신에게 발송
 
         // --- 2. 다른 서비스를 호출하여 필요한 정보 조회 ---
         // '보낸편지함'이 없으면 자동으로 생성하고, 그 ID를 가져옵니다.

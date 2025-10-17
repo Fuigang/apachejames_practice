@@ -21,7 +21,7 @@ public class MemberDAO {
 	
 	// 회원가입
 		public int signup(MemberDTO dto) { 
-			return mybatis.insert("Member.insert", dto);
+			return mybatis.insert(NAMESPACE + "signup", dto);
 		}
 	
 	

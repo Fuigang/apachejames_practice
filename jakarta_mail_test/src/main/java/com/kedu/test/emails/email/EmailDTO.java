@@ -1,6 +1,6 @@
 package com.kedu.test.emails.email;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class EmailDTO {
 	private int email_seq; // 메일 고유번호

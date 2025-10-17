@@ -1,0 +1,53 @@
+package com.kedu.test.emails.email;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+public class Email_accountService {
+
+	private final String JAMES_WEBADMIN_URL = "http://localhost:8800";
+    // 2단계에서 발급받은 토큰을 여기에 붙여넣으세요.
+    private final String ADMIN_TOKEN = "eyJhbGciOiJSUzI1NiJ9..."; 
+
+    /**
+     * James WebAdmin API를 사용하여 새로운 이메일 계정을 생성합니다.
+     * @param username 생성할 이메일 주소 (예: "new_user@test.com")
+     * @param password 원본 비밀번호
+     * @throws Exception 계정 생성 실패 시
+     */
+    public void createMailAccount(String username, String password) throws Exception {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = JAMES_WEBADMIN_URL + "/users/" + username;
+
+        // 1. HTTP 요청 헤더에 인증 토큰을 추가합니다.
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + ADMIN_TOKEN);
+
+        // 2. 요청 본문(Body)에 비밀번호를 JSON 형식으로 담습니다.
+        String requestBody = "{\"password\":\"" + password + "\"}";
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+        try {
+            // 3. PUT 방식으로 API를 호출하여 사용자를 생성합니다.
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+            
+            // 4. 성공 여부 확인 (204 No Content가 오면 성공)
+            if (response.getStatusCode() != HttpStatus.NO_CONTENT) {
+                throw new Exception("James WebAdmin API 호출 실패. 상태 코드: " + response.getStatusCode());
+            }
+            
+            System.out.println("James WebAdmin API를 통해 계정 '" + username + "' 생성을 성공적으로 요청했습니다.");
+
+        } catch (Exception e) {
+            // API 호출 중 발생한 모든 예외를 다시 던져서 상위 서비스에 알립니다.
+            e.printStackTrace();
+            throw new Exception("메일 서버(James)에 계정을 생성하는 데 실패했습니다.", e);
+        }
+    }
+}
